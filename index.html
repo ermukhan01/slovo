@@ -625,7 +625,7 @@ async function aiFromBrowser(text, onStatus){
   if (!navigator.gpu) throw new Error("no_webgpu");
   const webllm = await import("https://esm.run/@mlc-ai/web-llm");
   if (!webllmEngine){
-    webllmEngine = await webllm.CreateMLCEngine("Qwen2.5-0.5B-Instruct-q4f16_1-MLC", {
+    webllmEngine = await webllm.CreateMLCEngine("Qwen2.5-1.5B-Instruct-q4f16_1-MLC", {
       initProgressCallback: p => onStatus(p.text || "Загрузка модели…")
     });
   }
@@ -764,7 +764,7 @@ $("btn-ai").onclick = async () => {
   try {
     const found = sample ? await aiIssues(text) : await aiAuto(text);
     items = found; ignored.clear(); renderEditor();
-    setStatus(found.length ? `ИИ нашёл замечаний: ${found.length}.` : "ИИ не нашёл ошибок.", found.length ? "" : "ok");
+    setStatus(found.length ? `ИИ нашёл замечаний: ${found.length}.` : "ИИ не нашёл явных ошибок. Перечитайте текст сами: ИИ может пропустить ошибку.", found.length ? "" : "ok");
     await saveCheck("ИИ", text, found);
   } catch (e) {
     setStatus(errorText(e), "err");
